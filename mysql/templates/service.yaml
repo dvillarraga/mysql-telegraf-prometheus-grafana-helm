@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.mysql.name }}
+  labels: 
+    group: {{ .Values.mysql.group }}
+spec:
+  type: {{ .Values.mysql.cservice.type }}
+  selector:             
+    app: {{ .Values.mysql.name }}
+  ports:
+    - port: {{ .Values.mysql.cservice.port }}       
+      targetPort: {{ .Values.mysql.container.port }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.mysql.nservice.name }}
+  labels: 
+    group: {{ .Values.mysql.group }}
+spec:
+  type: {{ .Values.mysql.nservice.type }}
+  selector:             
+    app: {{ .Values.mysql.name }}
+  ports:
+    - port: {{ .Values.mysql.cservice.port }}       
+      targetPort: {{ .Values.mysql.container.port }}
+      nodePort: {{ .Values.mysql.nservice.nodePort }}

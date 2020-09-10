@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.prometheus.name }}
+  labels: 
+    group: {{ .Values.prometheus.group }}
+spec:
+  type: {{ .Values.prometheus.cservice.type }}
+  selector:
+    app: {{ .Values.prometheus.name }}
+  ports:
+    - port: {{ .Values.prometheus.cservice.port }}       
+      targetPort: {{ .Values.prometheus.container.port }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.prometheus.nservice.name }}
+  labels: 
+    group: {{ .Values.prometheus.group }}
+spec:
+  type: {{ .Values.prometheus.nservice.type }}
+  selector:             
+    app: {{ .Values.prometheus.name }}
+  ports:
+    - port: {{ .Values.prometheus.cservice.port }}       
+      targetPort: {{ .Values.prometheus.container.port }}
+      nodePort: {{ .Values.prometheus.nservice.nodePort }}

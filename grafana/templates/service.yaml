@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.grafana.name }}
+  labels: 
+    group: {{ .Values.grafana.group }}
+spec:
+  type: {{ .Values.grafana.cservice.type }}
+  selector:
+    app: {{ .Values.grafana.name }}
+  ports:
+    - port: {{ .Values.grafana.cservice.port }}       
+      targetPort: {{ .Values.grafana.container.port }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.grafana.nservice.name }}
+  labels: 
+    group: {{ .Values.grafana.group }}
+spec:
+  type: {{ .Values.grafana.nservice.type }}
+  selector:             
+    app: {{ .Values.grafana.name }}
+  ports:
+    - port: {{ .Values.grafana.cservice.port }}       
+      targetPort: {{ .Values.grafana.container.port }}
+      nodePort: {{ .Values.grafana.nservice.nodePort }}

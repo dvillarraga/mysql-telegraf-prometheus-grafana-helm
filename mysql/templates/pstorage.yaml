@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: {{ .Values.mysql.volume.kind }}
+metadata:
+  name: {{ .Values.mysql.volume.name }}
+spec:
+  storageClassName: {{ .Values.mysql.volume.storageClassName }}
+  capacity:
+    storage: {{ .Values.mysql.volume.capacityStorage }}
+  accessModes:
+    - {{ .Values.mysql.volume.accessMode }}
+  hostPath:
+    path: {{ .Values.mysql.volume.hostPath }}
+---
+apiVersion: v1
+kind: {{ .Values.mysql.volume.pvc.kind }}
+metadata:
+  name: {{ .Values.mysql.volume.pvc.name }}
+spec:
+  accessModes:
+    - {{ .Values.mysql.volume.pvc.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.mysql.volume.pvc.storage }}

@@ -1,0 +1,20 @@
+replicaCount: 1
+telegraf:
+  name: telegraf
+  group: metrics
+  container:
+    image: telegraf
+    port: 9126
+  cservice:
+    type: ClusterIP
+    port: 9126
+  nservice:
+    name: telegrafnp
+    type: NodePort
+    nodePort: 30809
+  volume:
+    name: telegraf-config
+    volumeMounts:
+      mountPath: /etc/telegraf/telegraf.conf
+      subPath: telegraf.conf
+      readOnly: true

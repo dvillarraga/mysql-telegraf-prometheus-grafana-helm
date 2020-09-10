@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.grafana.name }}
+  labels:
+    app: {{ .Values.grafana.name }}
+    group: {{ .Values.grafana.group }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.grafana.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.grafana.name }}
+        group: {{ .Values.grafana.group }}
+    spec:
+      containers:
+        - name: {{ .Values.grafana.name }}
+          image: {{ .Values.grafana.container.image }}
+          ports:
+            - containerPort: {{ .Values.grafana.container.port }}
+          volumeMounts:
+            - mountPath: {{ .Values.grafana.volumes.volumeMountsConfig.mountPath }}
+              name:  {{ .Values.grafana.volumes.volumeMountsConfig.name }}
+              subPath: {{ .Values.grafana.volumes.volumeMountsConfig.subPath }}
+              readOnly: {{ .Values.grafana.volumes.volumeMountsConfig.readOnly }}
+            - mountPath: {{ .Values.grafana.volumes.volumeMountsDashboard.mountPath }}
+              name:  {{ .Values.grafana.volumes.volumeMountsDashboard.name }}
+              subPath: {{ .Values.grafana.volumes.volumeMountsDashboard.subPath }}
+              readOnly: {{ .Values.grafana.volumes.volumeMountsDashboard.readOnly }}
+            - mountPath: {{ .Values.grafana.volumes.volumeMountsDashboardYaml.mountPath }}
+              name:  {{ .Values.grafana.volumes.volumeMountsDashboardYaml.name }}
+              subPath: {{ .Values.grafana.volumes.volumeMountsDashboardYaml.subPath }}
+              readOnly: {{ .Values.grafana.volumes.volumeMountsDashboardYaml.readOnly }}
+            - mountPath: {{ .Values.grafana.volumes.volumeMountsNotifiers.mountPath }}
+              name:  {{ .Values.grafana.volumes.volumeMountsNotifiers.name }}
+              subPath: {{ .Values.grafana.volumes.volumeMountsNotifiers.subPath }}
+              readOnly: {{ .Values.grafana.volumes.volumeMountsNotifiers.readOnly }}
+      volumes:
+        - name:  {{ .Values.grafana.volumes.volumeMountsConfig.name }}
+          configMap:
+            name:  {{ .Values.grafana.volumes.volumeMountsConfig.name }}
+        - name:  {{ .Values.grafana.volumes.volumeMountsDashboard.name }}
+          configMap:
+            name:  {{ .Values.grafana.volumes.volumeMountsDashboard.name }}
+        - name:  {{ .Values.grafana.volumes.volumeMountsDashboardYaml.name }}
+          configMap:
+            name:  {{ .Values.grafana.volumes.volumeMountsDashboardYaml.name }}
+        - name:  {{ .Values.grafana.volumes.volumeMountsNotifiers.name }}
+          configMap:
+            name:  {{ .Values.grafana.volumes.volumeMountsNotifiers.name }}

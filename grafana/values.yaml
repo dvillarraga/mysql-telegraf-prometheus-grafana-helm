@@ -1,0 +1,36 @@
+replicaCount: 1
+grafana:
+  name: grafana
+  group: metrics
+  container:
+    image: grafana/grafana
+    port: 3000
+  cservice:
+    type: ClusterIP
+    port: 3000
+  nservice:
+    name: grafananp
+    type: NodePort
+    nodePort: 30300
+  volumes:
+    volumeMountsConfig:
+      name: grafana-config
+      mountPath: /etc/grafana/provisioning/datasources/grafanaprometheus.yml
+      subPath: grafanaprometheus.yml
+      readOnly: true
+    volumeMountsDashboard:
+      name: grafana-config-dashboard
+      mountPath: /etc/grafana/provisioning/dashboards/prometheus.json
+      subPath: prometheus.json
+      readOnly: true
+    volumeMountsDashboardYaml:
+      name: grafana-config-dashboard-yaml
+      mountPath: /etc/grafana/provisioning/dashboards/dashboard.yaml
+      subPath: dashboard.yaml
+      readOnly: true
+    volumeMountsNotifiers:
+      name: grafana-config-notifier
+      mountPath: /etc/grafana/provisioning/notifiers/notifierchannel.yaml
+      subPath: notifierchannel.yaml
+      readOnly: true
+  

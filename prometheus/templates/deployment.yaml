@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.prometheus.name }}
+  labels:
+    app: {{ .Values.prometheus.name }}
+    group: {{ .Values.prometheus.group }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.prometheus.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.prometheus.name }}
+        group: {{ .Values.prometheus.group }}
+    spec:
+      containers:
+        - name: {{ .Values.prometheus.name }}
+          image: {{ .Values.prometheus.container.image }}
+          ports:
+            - containerPort: {{ .Values.prometheus.container.port }}
+          volumeMounts:
+            - mountPath: {{ .Values.prometheus.volume.volumeMounts.mountPath }}
+              name:  {{ .Values.prometheus.volume.name }}
+              subPath: {{ .Values.prometheus.volume.volumeMounts.subPath }}
+              readOnly: {{ .Values.prometheus.volume.volumeMounts.readOnly }}
+      volumes:
+        - name:  {{ .Values.prometheus.volume.name }}
+          configMap:
+            name:  {{ .Values.prometheus.volume.name }}

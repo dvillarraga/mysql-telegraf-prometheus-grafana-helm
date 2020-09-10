@@ -1,0 +1,5 @@
+mysql:
+  config:
+      data:
+          - key: MYSQL_ROOT_PASSWORD
+            value: root

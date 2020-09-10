@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.telegraf.name }}
+  labels:
+    app: {{ .Values.telegraf.name }}
+    group: {{ .Values.telegraf.group }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.telegraf.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.telegraf.name }}
+        group: {{ .Values.telegraf.group }}
+    spec:
+      containers:
+        - name: {{ .Values.telegraf.name }}
+          image: {{ .Values.telegraf.container.image }}
+          ports:
+            - containerPort: {{ .Values.telegraf.container.port }}
+          volumeMounts:
+            - mountPath: {{ .Values.telegraf.volume.volumeMounts.mountPath }}
+              name:  {{ .Values.telegraf.volume.name }}
+              subPath: {{ .Values.telegraf.volume.volumeMounts.subPath }}
+              readOnly: {{ .Values.telegraf.volume.volumeMounts.readOnly }}
+      volumes:
+        - name:  {{ .Values.telegraf.volume.name }}
+          configMap:
+            name:  {{ .Values.telegraf.volume.name }}

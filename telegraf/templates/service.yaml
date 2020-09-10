@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.telegraf.name }}
+  labels: 
+    group: {{ .Values.telegraf.group }}
+spec:
+  type: {{ .Values.telegraf.cservice.type }}
+  selector:
+    app: {{ .Values.telegraf.name }}
+  ports:
+    - port: {{ .Values.telegraf.cservice.port }}       
+      targetPort: {{ .Values.telegraf.container.port }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.telegraf.nservice.name }}
+  labels: 
+    group: {{ .Values.telegraf.group }}
+spec:
+  type: {{ .Values.telegraf.nservice.type }}
+  selector:             
+    app: {{ .Values.telegraf.name }}
+  ports:
+    - port: {{ .Values.telegraf.cservice.port }}       
+      targetPort: {{ .Values.telegraf.container.port }}
+      nodePort: {{ .Values.telegraf.nservice.nodePort }}
