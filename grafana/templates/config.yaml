@@ -343,4 +343,4 @@ data:
         frequency: 1h
         settings:
           uploadImage: false
-          url: https://hooks.slack.com/services/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
+          url: {HERE IS THE URL}
